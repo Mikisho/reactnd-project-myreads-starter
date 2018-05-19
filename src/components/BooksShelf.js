@@ -3,7 +3,7 @@ import React from 'react';
 import '../App.css';
 
 const BooksShelf = ({book, handleBookShelf}) => {
-  const imageThumb = book.imageLinks ? book.imageLinks.smallThumbnail : null;
+  const imageThumbnail = book.imageLinks ? book.imageLinks.smallThumbnail : null;
 
   return (
     <li>
@@ -14,7 +14,7 @@ const BooksShelf = ({book, handleBookShelf}) => {
             style={{
               width: 128,
               height: 193,
-              backgroundImage: `url(${imageThumb}`,
+              backgroundImage: `url(${imageThumbnail}`,
             }}
           />
           <div className="book-shelf-changer">

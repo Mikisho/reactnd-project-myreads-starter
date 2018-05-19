@@ -4,6 +4,7 @@ This project is a bookshelf app which allows the user to selct and acatagorize b
 # Getting Started
 
 * Install the current version of `NodeJS` if not available.
+
 * Clone this project repository and download it to your local machine as zip file or using `git clone` command on your terminal.
 
 * Go to your cloned project directory.
