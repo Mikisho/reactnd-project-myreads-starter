@@ -13,7 +13,7 @@ class SearchBooks extends Component {
     books: [],
   };
 
-  handleUpdateQuery = query => {
+  handleQueryChange = query => {
     BooksAPI.search (query).then (
       books => (books ? this.setState ({books}) : [])
     );
@@ -64,10 +64,10 @@ class SearchBooks extends Component {
               type="text"
               placeholder="Search by title or author"
               value={this.state.query}
-              onChange={event => this.handleUpdateQuery (event.target.value)}
+              onChange={event => this.handleQueryChange (event.target.value)}
               onKeyPress={event => {
                 if (event.key === 'Enter') {
-                  this.handleUpdateQuery (event.target.value);
+                  this.handleQueryChange (event.target.value);
                 }
               }}
             />
