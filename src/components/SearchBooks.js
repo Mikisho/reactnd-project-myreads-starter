@@ -74,7 +74,7 @@ class SearchBooks extends Component {
               onChange={event => this.handleUpdateQuery (event.target.value)}
               onKeyPress={event => {
                 if (event.key === 'Enter') {
-                  console.log (this.handleUpdateQuery ());
+                  this.handleUpdateQuery (event.target.value);
                 }
               }}
             />
