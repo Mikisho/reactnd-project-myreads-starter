@@ -73,7 +73,7 @@ class BooksList extends Component {
           </div>
         </div>
         <div className="open-search">
-          <Link to="/search" />
+          <Link to="/search" > Add a book</Link>
         </div>
       </div>
     );
