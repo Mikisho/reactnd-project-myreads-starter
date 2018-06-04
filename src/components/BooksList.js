@@ -18,15 +18,15 @@ class BooksList extends Component {
 
   getAllBooks () {
     BooksAPI.getAll ().then (books => {
-      let currently_Reading = books.filter (book => {
+      let currently_Reading = books ? books.filter (book => {
         return book.shelf === shelfs.currentlyReading;
-      });
-      let want_To_Read = books.filter (book => {
+      }) : null;
+      let want_To_Read = books ? books.filter (book => {
         return book.shelf === shelfs.wantToRead;
-      });
-      let read = books.filter (book => {
+      }) : null;
+      let read = books ? books.filter (book => {
         return book.shelf === shelfs.read;
-      });
+      }) : null;
 
       this.setState ({
         currently_Reading,
