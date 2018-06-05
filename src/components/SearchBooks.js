@@ -1,87 +1,77 @@
-import React, {Component} from 'react';
-
-import {Link} from 'react-router-dom';
-
-import * as BooksAPI from '../utils/BooksAPI';
-
-import '../App.css';
-import BooksShelf from './BooksShelf';
+import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
+import * as BooksAPI from '../utils/BooksAPI'
+//Components
+import BookShelf from './BookShelf'
 
 class SearchBooks extends Component {
+
   state = {
-    query: '',
     books: [],
-  };
-
-  handleQueryChange = query => {
-    BooksAPI.search (query).then (
-      books => (books ? this.setState ({books}) : [])
-    );
-    this.setState ({
-      query,
-    });
-  };
-
-  handleBookShelf (book, shelf) {
-    BooksAPI.update (book, shelf)
-      .then (
-        () =>
-          shelf !== 'none'
-            ? alert (`${book.title} succesfully added to shelf!`)
-            : null
-      )
-      .catch (() => alert ('error occured'));
+    query: ''
   }
 
-  displaySearcResults () {
-    const {books, query} = this.state;
+  mergeArr = (arr,Arr) => {
+    return arr.map((item)=>{
+      Arr.forEach((Item)=>{
+        if(Item.id === item.id){
+          item.shelf = Item.shelf
+          return
+        }
+      })
+      return item
+    })
+  }
 
-    if (query) {
-      return books.error
-        ? <div>search not found</div>
-        : books.map ((book, index) => {
-            return (
-              <BooksShelf
-                key={index}
-                book={book}
-                handleBookShelf={this.handleBookShelf.bind (this)}
-              />
-            );
-          });
+  updateQuery = (event) => {
+    const value = event.target.value.trim()
+    this.setState({query: value})
+    this.searchData(value)
+  }
+
+  searchData = (value) => {
+    if (value.length !== 0) {
+      BooksAPI.search(value, 10).then((books) => {
+        if(books.length>0){
+          books = books.filter((book)=>book.imageLinks)
+          books = this.mergeArr(books,this.props.myBooks)
+          this.setState({books})
+        }
+        else{
+          this.setState({books: []})
+        }
+      })
+    } else {
+      this.setState({books: [], query: ''})
     }
   }
 
-  render () {
+
+  render() {
+    const books = this.state.books
+    const query = this.state.query
     return (
-      <div className="search-books">
-        <div className="search-books-bar">
-          <Link className="close-search" to="/">
-            Close
-          </Link>
-          <div className="search-books-input-wrapper">
-
-            <input
-              type="text"
-              placeholder="Search by title or author"
-              value={this.state.query}
-              onChange={event => this.handleQueryChange (event.target.value)}
-              onKeyPress={event => {
-                if (event.key === 'Enter') {
-                  this.handleQueryChange (event.target.value);
-                }
-              }}
-            />
-
+      <div>
+        <div className="search-books">
+          <div className="search-books-bar">
+            <Link className="close-search" to="/">Close</Link>
+            <div className="search-books-input-wrapper">
+              <input type="text"
+                placeholder="Search by title or author"
+                value={query}
+                onChange={this.updateQuery}
+              />
+            </div>
+          </div>
+          <div className="search-books-results">
+            <ol className="books-grid"></ol>
           </div>
         </div>
-        <div className="search-books-results">
-          <ol className="books-grid">
-            {this.displaySearcResults ()}
-          </ol>
-        </div>
-
+        {this.state.query !== '' && books.length > 0 && (<BookShelf title="Search Results" books={books} onShelfChange={(id, shelf) => {
+          this.props.onShelfChange(id, shelf)
+        }}/>)}
       </div>
-    );
+    )
   }
 }
 
