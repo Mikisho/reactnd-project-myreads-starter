@@ -23,15 +23,15 @@ class SearchBooks extends Component {
     })
   }
 
-  updateQuery = (event) => {
-    const value = event.target.value.trim()
-    this.setState({query: value})
-    this.searchData(value)
+  updateQuery = (query) => {
+    // const value = event.target.value.trim()
+    this.setState({query: query}, this.searchData)
+    
   }
 
-  searchData = (value) => {
-    if (value.length !== 0) {
-      BooksAPI.search(value, 10).then((books) => {
+  searchData = () => {
+    if (this.state.query.length !== 0) {
+      BooksAPI.search(this.state.query.trim(), 10).then((books) => {
         if(books.length>0){
           books = books.filter((book)=>book.imageLinks)
           books = this.mergeArr(books,this.props.myBooks)
@@ -59,7 +59,7 @@ class SearchBooks extends Component {
               <input type="text"
                 placeholder="Search by title or author"
                 value={query}
-                onChange={this.updateQuery}
+                onChange={(event) => this.updateQuery(event.target.value)}
               />
             </div>
           </div>
