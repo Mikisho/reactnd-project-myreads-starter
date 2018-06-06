@@ -33,7 +33,6 @@ class SearchBooks extends Component {
     if (this.state.query.length !== 0) {
       BooksAPI.search(this.state.query.trim(), 10).then((books) => {
         if(books.length>0){
-          books = books.filter((book)=>book.imageLinks)
           books = this.mergeArr(books,this.props.myBooks)
           this.setState({books})
         }
